@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veg Pizza Recipe Card</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f298;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .recipe-card {
+      background: lch(83.57% 76.45 87.88);
+      max-width: 800px;
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      overflow: hidden;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      background: #e74c3c;
+      color: rgba(255, 255, 249, 0.947);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+    }
+
+    .image img {
+      width: 100%;
+      height: auto;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    h2 {
+      color: #e74c3c;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+    }
+
+    li:hover {
+      color: #e74c3c;
+      text-decoration: underline;
+      transition: 0.3s;
+    }
+
+    button {
+      background: #e74c3c;
+      color: rgb(251, 251, 247);
+      border: none;
+      padding: 10px 15px;
+      margin: 10px 5px 10px 0;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #c0392b;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .progress-container {
+      background: #fffffd;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 15px 0;
+    }
+
+    .progress-bar {
+      height: 15px;
+      width: 0%;
+      background: #2ecc71;
+      transition: width 0.5s;
+    }
+
+    .step-active {
+      background: #d8f9d6;
+      padding: 5px;
+      border-left: 5px solid #e74c3c;
+    }
+
+    .info {
+      background: #4ffd49;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .content {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="recipe-card">
+
+    <div class="header">
+      <h1>Veg Pizza</h1>
+      <p>Begin your cooking journey with this wholesome veg pizza recipe, crafted to deliver a balance of melted cheese, garden-fresh toppings, and irresistible aroma straight from the oven</p>
+    </div>
+
+    <div class="image">
+      <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3" alt="Veg Pizza">
+    </div>
+
+    <div class="content">
+
+      <button onclick="toggleIngredients()">Show / Hide Ingredients</button>
+
+      <div id="ingredients">
+        <h2>Ingredients</h2>
+        <ul>
+          <li>Pizza base</li>
+          <li>Pizza sauce</li>
+          <li>Mozzarella cheese</li>
+          <li>Capsicum</li>
+          <li>Onion</li>
+          <li>Tomato</li>
+          <li>Olives</li>
+          <li>Oregano & chili flakes</li>
+        </ul>
+      </div>
+
+      <h2>Steps</h2>
+      <ol id="steps">
+        <li>Preheat the oven to 200°C.</li>
+        <li>Spread pizza sauce on the base.</li>
+        <li>Add cheese evenly.</li>
+        <li>Add chopped vegetables.</li>
+        <li>Sprinkle oregano and chili flakes.</li>
+        <li>Bake for 12–15 minutes.</li>
+        <li>Slice and serve hot.</li>
+      </ol>
+
+      <button onclick="startCooking()">Start Cooking</button>
+      <button onclick="nextStep()">Next Step</button>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="info">
+        <p><strong>Preparation Time:</strong> 30 minutes</p>
+        <p><strong>Serving Size:</strong> 2 people</p>
+        <p><strong>Timer:</strong> <span id="timer">30:00</span></p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentStep = -1;
+    const steps = document.querySelectorAll("#steps li");
+    const progressBar = document.getElementById("progressBar");
+
+    function toggleIngredients() {
+      document.getElementById("ingredients").classList.toggle("hidden");
+    }
+
+    function startCooking() {
+      currentStep = 0;
+      highlightStep();
+      startTimer(30 * 60);
+    }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        highlightStep();
+      }
+    }
+
+    function highlightStep() {
+      steps.forEach(step => step.classList.remove("step-active"));
+      steps[currentStep].classList.add("step-active");
+
+      let progress = ((currentStep + 1) / steps.length) * 100;
+      progressBar.style.width = progress + "%";
+    }
+
+    function startTimer(seconds) {
+      let time = seconds;
+      const timerDisplay = document.getElementById("timer");
+
+      setInterval(() => {
+        let mins = Math.floor(time / 60);
+        let secs = time % 60;
+        timerDisplay.textContent =
+          mins.toString().padStart(2, "0") + ":" +
+          secs.toString().padStart(2, "0");
+        time--;
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>
